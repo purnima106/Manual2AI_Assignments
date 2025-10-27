@@ -7,9 +7,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --navy-primary: #0B1426;
-      --navy-secondary: #1A2332;
-      --navy-dark: #05101A;
+      --black-primary: #000000;
+      --black-secondary: #111111;
+      --black-dark: #0A0A0A;
       --cyan-primary: #00D4FF;
       --cyan-secondary: #06B6D4;
       --cyan-light: #67E8F9;
@@ -32,7 +32,7 @@
 
     body {
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: var(--navy-primary);
+      background: #000000;
       color: var(--white);
       line-height: 1.6;
       min-height: 100vh;
@@ -54,67 +54,10 @@
       z-index: -1;
     }
 
-    /* Navigation Bar */
-    .navbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--glass-border);
-      padding: 1rem 0;
-      z-index: 1000;
-      transition: all 0.3s ease;
-    }
-
-    .navbar-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .nav-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.5rem;
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      color: var(--white);
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 0.9rem;
-      transition: all 0.3s ease;
-    }
-
-    .nav-btn:hover {
-      background: rgba(0, 212, 255, 0.1);
-      border-color: var(--cyan-primary);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-medium);
-    }
-
-    .nav-btn.primary {
-      background: var(--gradient-accent);
-      color: var(--navy-primary);
-      font-weight: 600;
-    }
-
-    .nav-btn.primary:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-heavy);
-    }
-
     .container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 2rem;
-      margin-top: 5rem;
+      padding: 1rem;
       position: relative;
       z-index: 1;
     }
@@ -123,8 +66,8 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 3rem;
-      padding: 2rem;
+      margin-bottom: 1.5rem;
+      padding: 1.5rem;
       background: var(--glass-bg);
       backdrop-filter: blur(20px);
       border: 1px solid var(--glass-border);
@@ -139,7 +82,7 @@
     }
 
     .header-content h1 {
-      font-size: 2.5rem;
+      font-size: 2rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
       background: var(--gradient-accent);
@@ -176,8 +119,8 @@
     .main-grid {
       display: grid;
       grid-template-columns: 2fr 1fr;
-      gap: 2rem;
-      margin-bottom: 2rem;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
     }
 
     .card {
@@ -185,7 +128,7 @@
       backdrop-filter: blur(20px);
       border: 1px solid var(--glass-border);
       border-radius: 20px;
-      padding: 2rem;
+      padding: 1.5rem;
       box-shadow: var(--shadow-medium);
       transition: all 0.3s ease;
       position: relative;
@@ -214,9 +157,9 @@
     }
 
     .section-title {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 600;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       color: var(--cyan-light);
       position: relative;
       padding-left: 1rem;
@@ -243,9 +186,9 @@
       counter-increment: step-counter;
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
-      padding: 1.5rem;
+      padding: 1rem;
       border-radius: 16px;
-      margin-bottom: 1rem;
+      margin-bottom: 0.75rem;
       position: relative;
       transition: all 0.3s ease;
       cursor: pointer;
@@ -260,7 +203,7 @@
       width: 30px;
       height: 30px;
       background: var(--gradient-accent);
-      color: var(--navy-primary);
+      color: var(--black-primary);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -278,12 +221,12 @@
     .tools {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 0.75rem;
     }
 
     .tool-link {
       display: block;
-      padding: 1rem 1.5rem;
+      padding: 0.75rem 1rem;
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
       border-radius: 12px;
@@ -308,7 +251,7 @@
     }
 
     .tool-link:hover {
-      color: var(--navy-primary);
+      color: var(--black-primary);
       transform: translateY(-2px);
       box-shadow: var(--shadow-medium);
     }
@@ -318,11 +261,11 @@
     }
 
     .prompt-box {
-      background: var(--navy-dark);
+      background: var(--black-dark);
       border: 1px solid var(--glass-border);
       border-radius: 16px;
-      padding: 1.5rem;
-      margin: 1rem 0;
+      padding: 1rem;
+      margin: 0.75rem 0;
       position: relative;
       overflow: hidden;
     }
@@ -350,13 +293,13 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 1rem 2rem;
+      padding: 0.75rem 1.5rem;
       background: var(--gradient-accent);
-      color: var(--navy-primary);
+      color: var(--black-primary);
       text-decoration: none;
       border-radius: 12px;
       font-weight: 600;
-      font-size: 1rem;
+      font-size: 0.9rem;
       transition: all 0.3s ease;
       box-shadow: var(--shadow-light);
       position: relative;
@@ -388,7 +331,7 @@
     }
 
     .checklist li {
-      padding: 0.75rem 0;
+      padding: 0.5rem 0;
       border-bottom: 1px solid var(--glass-border);
       position: relative;
       padding-left: 2rem;
@@ -407,8 +350,8 @@
     }
 
     .footer {
-      margin-top: 3rem;
-      padding: 2rem;
+      margin-top: 1.5rem;
+      padding: 1rem;
       background: var(--glass-bg);
       backdrop-filter: blur(20px);
       border: 1px solid var(--glass-border);
@@ -416,11 +359,47 @@
       text-align: center;
       color: var(--white-muted);
       font-size: 0.9rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .footer strong {
       color: var(--cyan-light);
       font-weight: 600;
+    }
+
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.8rem;
+      transition: all 0.3s ease;
+    }
+
+    .nav-btn:hover {
+      background: rgba(0, 212, 255, 0.1);
+      border-color: var(--cyan-primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-medium);
+    }
+
+    .nav-btn.primary {
+      background: var(--gradient-accent);
+      color: var(--black-primary);
+      font-weight: 600;
+    }
+
+    .nav-btn.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-heavy);
     }
 
     /* Animations */
@@ -450,24 +429,19 @@
 
     /* Mobile Responsiveness */
     @media (max-width: 768px) {
-      .navbar-content {
-        padding: 0 1rem;
-      }
-
       .container {
-        padding: 1rem;
-        margin-top: 4rem;
+        padding: 0.75rem;
       }
 
       .header {
         flex-direction: column;
-        gap: 1rem;
+        gap: 0.75rem;
         text-align: center;
-        padding: 1.5rem;
+        padding: 1rem;
       }
 
       .header-content h1 {
-        font-size: 2rem;
+        font-size: 1.75rem;
       }
 
       .header-meta {
@@ -477,20 +451,25 @@
 
       .main-grid {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: 1rem;
       }
 
       .card {
-        padding: 1.5rem;
+        padding: 1rem;
       }
 
       .steps li {
-        padding: 1rem;
+        padding: 0.75rem;
         margin-left: 1rem;
       }
 
       .steps li::before {
         left: -15px;
+      }
+
+      .footer {
+        flex-direction: column;
+        gap: 0.75rem;
       }
     }
 
@@ -504,30 +483,12 @@
       }
 
       .card {
-        padding: 1rem;
-      }
-
-      .nav-btn {
-        padding: 0.5rem 1rem;
-        font-size: 0.8rem;
+        padding: 0.75rem;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Navigation Bar -->
-  <nav class="navbar">
-    <div class="navbar-content">
-      <a href="#" class="nav-btn">
-        ← Back
-      </a>
-      <div style="font-weight: 600; color: var(--cyan-light);">Task 4</div>
-      <a href="#" class="nav-btn primary">
-        Next →
-      </a>
-    </div>
-  </nav>
-
   <div class="container">
     <header class="header">
       <div class="header-content">
@@ -554,32 +515,26 @@
         <p style="margin-bottom: 1rem; color: var(--white-muted);">Use one of the free AI presentation tools below. Upload the same text and ask the AI to create a short presentation automatically.</p>
         
         <div class="tools">
-          <a href="https://gamma.app/" target="_blank" class="tool-link">Gamma.app (Free tier)</a>
-          <a href="https://tome.app/" target="_blank" class="tool-link">Tome.app</a>
+          <a href="https://www.canva.com/magic-design/" target="_blank" class="tool-link">Canva Magic Design — AI presentation generator</a>
+          <a href="https://slidesgo.com/ai-presentation-maker" target="_blank" class="tool-link">Slidesgo AI — automated slide creation</a>
+          <a href="https://beautiful.ai/" target="_blank" class="tool-link">Beautiful.ai — smart presentation builder</a>
         </div>
 
         <div class="section-title">Suggested AI Prompt</div>
         <div class="prompt-box">
-        <pre>"Turn this report into a professional 3-slide presentation.
+          <pre>"Turn this report into a professional 3-slide presentation.
 Include:
 - Slide 1: Key highlights
 - Slide 2: Data or visual summary
 - Slide 3: Next steps or recommendations
 Use a clean, corporate design style."</pre>
         </div>
-
-        <div class="section-title">Facilitator Notes</div>
-        <ul class="checklist">
-          <li>Compare manual vs AI-generated presentation quality and time.</li>
-          <li>Discuss how AI tools interpret context and emphasize key insights.</li>
-          <li>Highlight customization options and when human input is still required.</li>
-        </ul>
       </div>
 
       <aside class="card">
         <div class="section-title">Resources & Sample Text</div>
         <div style="margin-bottom: 1rem; color: var(--white-muted);">Download sample report (TXT):</div>
-        <a class="btn-primary" href="data:text/plain;charset=utf-8,Quarterly%20Marketing%20Update%0A%0AIn%20Q1%2C%20our%20brand%20campaigns%20increased%20social%20reach%20by%2025%25%20and%20website%20traffic%20by%2018%25.%20Customer%20feedback%20on%20product%20quality%20improved%20with%20a%2015%25%20drop%20in%20support%20tickets.%20Sales%20growth%20was%20steady%20at%2012%25.%0A%0AKey%20Focus%20Areas%3A%0A-%20Launch%20new%20referral%20program%20in%20Q2%0A-%20Expand%20ad%20campaigns%20to%20tier-2%20cities%0A-%20Improve%20post-purchase%20experience%20on%20mobile%20apps%0A%0ANext%20Steps%3A%0A-%20Plan%20cross-functional%20marketing%20workshops%0A-%20Optimize%20content%20for%20seasonal%20trends" download="marketing_report.txt">
+        <a class="btn-primary" href="data:text/plain;charset=utf-8,Q4%202024%20Financial%20Performance%20Analysis%20%26%20Strategic%20Review%0A%0AExecutive%20Summary%3A%0AOur%20Q4%20performance%20demonstrates%20mixed%20results%20across%20key%20metrics.%20Revenue%20growth%20slowed%20to%208.3%25%20YoY%20compared%20to%20Q3%27s%2012.7%25%2C%20primarily%20due%20to%20seasonal%20fluctuations%20and%20increased%20competition%20in%20the%20SaaS%20market.%20Customer%20acquisition%20costs%20rose%20by%2018%25%20while%20customer%20lifetime%20value%20decreased%20by%205%25.%20However%2C%20operational%20efficiency%20improved%20with%20a%2015%25%20reduction%20in%20support%20ticket%20volume%20and%20a%2022%25%20increase%20in%20customer%20satisfaction%20scores.%0A%0AKey%20Financial%20Metrics%3A%0A-%20Total%20Revenue%3A%20%2412.4M%20(%2B8.3%25%20YoY)%0A-%20Gross%20Margin%3A%2073.2%25%20(%2B2.1%25%20vs%20Q3)%0A-%20EBITDA%3A%20%242.8M%20(%2B14.6%25%20YoY)%0A-%20Cash%20Flow%3A%20%241.9M%20positive%20operating%20cash%20flow%0A-%20Customer%20Churn%20Rate%3A%204.2%25%20(%2B0.8%25%20vs%20Q3)%0A%0AStrategic%20Initiatives%20%26%20Challenges%3A%0A-%20Product%20Development%3A%20Launched%20AI-powered%20analytics%20module%20with%2023%25%20adoption%20rate%0A-%20Market%20Expansion%3A%20Entered%20European%20markets%20with%20initial%20%241.2M%20in%20revenue%0A-%20Operational%20Challenges%3A%20Supply%20chain%20disruptions%20affected%20hardware%20deliveries%20by%2015%25%0A-%20Competitive%20Pressure%3A%20Pricing%20wars%20in%20core%20segments%20reduced%20margins%20by%203.2%25%0A%0ARisk%20Assessment%3A%0A-%20Regulatory%20Compliance%3A%20GDPR%20updates%20require%20%24500K%20in%20additional%20compliance%20investment%0A-%20Technology%20Debt%3A%20Legacy%20system%20modernization%20estimated%20at%20%241.8M%20over%20next%2018%20months%0A-%20Talent%20Retention%3A%20Key%20engineer%20turnover%20rate%20increased%20to%2012%25%20(%2B4%25%20vs%20Q3)%0A%0A2025%20Strategic%20Priorities%3A%0A-%20Revenue%20Diversification%3A%20Target%2025%25%20revenue%20from%20new%20product%20lines%0A-%20Operational%20Excellence%3A%20Implement%20AI-driven%20customer%20support%20automation%0A-%20Market%20Penetration%3A%20Expand%20APAC%20presence%20with%20localized%20solutions%0A-%20Innovation%20Investment%3A%20Allocate%2018%25%20of%20R%26D%20budget%20to%20emerging%20technologies%0A%0ANext%20Steps%3A%0A-%20Board%20Presentation%3A%20Prepare%20comprehensive%20Q4%20review%20for%20January%20board%20meeting%0A-%20Budget%20Planning%3A%20Finalize%202025%20operational%20budget%20with%20focus%20on%20efficiency%20gains%0A-%20Stakeholder%20Communication%3A%20Schedule%20investor%20updates%20and%20customer%20advisory%20council%20meetings" download="financial_report.txt">
           📄 Download Sample Text Report
         </a>
 
@@ -593,7 +548,13 @@ Use a clean, corporate design style."</pre>
     </div>
 
     <footer class="footer">
-      Continue to next exercise → <strong>Task: AI Research Assistant</strong>
+      <a href="#" class="nav-btn">
+        ← Back
+      </a>
+      <div style="color: var(--cyan-light); font-weight: 600;">Continue to next exercise → <strong>Task: AI Research Assistant</strong></div>
+      <a href="#" class="nav-btn primary">
+        Next →
+      </a>
     </footer>
   </div>
 
