@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Task 1 — Excel → Dashboard (Manual→AI)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy-primary: #0B1426;
+      --navy-secondary: #1A2332;
+      --navy-dark: #05101A;
+      --cyan-primary: #00D4FF;
+      --cyan-secondary: #06B6D4;
+      --cyan-light: #67E8F9;
+      --white: #FFFFFF;
+      --white-muted: #F8FAFC;
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+      --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+      --shadow-heavy: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      --gradient-accent: linear-gradient(135deg, var(--cyan-primary) 0%, var(--cyan-secondary) 100%);
+      --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #000000;
+      color: var(--white);
+      line-height: 1.6;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+      padding: 1.5rem;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      box-shadow: var(--shadow-medium);
+      transition: all 0.3s ease;
+    }
+
+    .header:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-heavy);
+    }
+
+    .header-content h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .header-content .lead {
+      font-size: 1.1rem;
+      color: var(--white-muted);
+      font-weight: 400;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+
+    .header-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: right;
+      animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+
+    .meta-item {
+      padding: 0.5rem 1rem;
+      background: var(--glass-bg);
+      border-radius: 12px;
+      border: 1px solid var(--glass-border);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-medium);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--gradient-accent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-heavy);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--cyan-light);
+      position: relative;
+      padding-left: 1rem;
+    }
+
+    .section-title::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 20px;
+      background: var(--gradient-accent);
+      border-radius: 2px;
+    }
+
+    .steps {
+      list-style: none;
+      counter-reset: step-counter;
+    }
+
+    .steps li {
+      counter-increment: step-counter;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      padding: 1rem;
+      border-radius: 16px;
+      margin-bottom: 0.75rem;
+      position: relative;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .steps li::before {
+      content: counter(step-counter);
+      position: absolute;
+      left: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 30px;
+      background: var(--gradient-accent);
+      color: var(--black-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .steps li:hover {
+      transform: translateX(10px);
+      background: rgba(0, 212, 255, 0.1);
+      border-color: var(--cyan-primary);
+    }
+
+    .tools {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .tool-link {
+      display: block;
+      padding: 0.75rem 1rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tool-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--gradient-accent);
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+
+    .tool-link:hover {
+      color: var(--black-primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-medium);
+    }
+
+    .tool-link:hover::before {
+      left: 0;
+    }
+
+    .prompt-box {
+      background: var(--black-dark);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 1rem;
+      margin: 0.75rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .prompt-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--gradient-accent);
+    }
+
+    .prompt-box pre {
+      color: var(--cyan-light);
+      font-family: 'Inter', monospace;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin: 0;
+      white-space: pre-wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--gradient-accent);
+      color: var(--black-primary);
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-light);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-heavy);
+    }
+
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    .upload-area {
+      border: 2px dashed var(--glass-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: center;
+      background: var(--glass-bg);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .upload-area:hover {
+      border-color: var(--cyan-primary);
+      background: rgba(0, 212, 255, 0.05);
+    }
+
+    .upload-area input[type="file"] {
+      margin-top: 1rem;
+      padding: 0.5rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      color: var(--white);
+    }
+
+    .checklist {
+      list-style: none;
+    }
+
+    .checklist li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--glass-border);
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .checklist li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--cyan-primary);
+      font-weight: bold;
+    }
+
+    .checklist li:last-child {
+      border-bottom: none;
+    }
+
+    .ai-solution-toggle {
+      margin: 1rem 0;
+    }
+
+    .toggle-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 1.5rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      color: var(--white);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      text-align: left;
+    }
+
+    .toggle-btn:hover {
+      background: rgba(0, 212, 255, 0.1);
+      border-color: var(--cyan-primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-medium);
+    }
+
+    .toggle-icon {
+      font-size: 0.8rem;
+      transition: transform 0.3s ease;
+    }
+
+    .toggle-btn.expanded .toggle-icon {
+      transform: rotate(90deg);
+    }
+
+    .ai-solution-content {
+      margin-top: 1rem;
+      animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .footer {
+      margin-top: 3rem;
+      padding: 2rem;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      text-align: center;
+      color: var(--white-muted);
+      font-size: 0.9rem;
+    }
+
+    .footer strong {
+      color: var(--cyan-light);
+      font-weight: 600;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.7;
+      }
+    }
+
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      .container {
+        padding: 0.75rem;
+      }
+
+      .header {
+        flex-direction: column;
+        gap: 0.75rem;
+        text-align: center;
+        padding: 1rem;
+      }
+
+      .header-content h1 {
+        font-size: 1.75rem;
+      }
+
+      .header-meta {
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      .main-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .card {
+        padding: 1rem;
+      }
+
+      .steps li {
+        padding: 0.75rem;
+        margin-left: 1rem;
+      }
+
+      .steps li::before {
+        left: -15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header-content h1 {
+        font-size: 1.5rem;
+      }
+
+      .header-meta {
+        flex-direction: column;
+      }
+
+      .card {
+        padding: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="header-content">
+        <h1>Task 1 — Excel → Dashboard (Manual → AI)</h1>
+        <p class="lead">Show participants how raw spreadsheet data becomes a presentable dashboard in minutes using free AI tools.</p>
+      </div>
+      <div class="header-meta">
+        <div class="meta-item">Estimated time: <strong>15–20 min</strong></div>
+        <div class="meta-item">Difficulty: <strong>Medium</strong></div>
+      </div>
+    </header>
+
+    <div class="main-grid">
+      <div class="card">
+        <div class="section-title">1. Manual Task (for participants)</div>
+        <ol class="steps">
+          <li>Download the sample CSV (button on the right).</li>
+          <li>Open it in Excel or Google Sheets and create: a bar chart (Revenue by Region), a line chart (Monthly Revenue trend), a scatter plot (Profit Margin vs Customer Satisfaction), and a top-performer table with profit analysis.</li>
+          <li>Calculate correlation between Customer Satisfaction and Revenue, and add trend analysis for Marketing Spend efficiency.</li>
+          <li>Format slide-ready visuals (titles, legends, annotations) and save as images or copy into a slide.</li>
+          <li>Note how long each step took.</li>
+        </ol>
+
+        <div class="section-title">2. AI-assisted Task (demo)</div>
+        <p style="margin-bottom: 1rem; color: var(--white-muted);">Use one of the free web tools below. Upload the same CSV and ask the AI to build a comprehensive dashboard with multiple chart types, correlation analysis, and strategic business insights.</p>
+
+        <div class="ai-solution-toggle">
+          <button class="toggle-btn" onclick="toggleAISolution()">
+            <span class="toggle-icon">▶</span>
+            AI Solution by Viral
+          </button>
+        </div>
+
+        <div class="ai-solution-content" id="aiSolutionContent" style="display: none;">
+          <div class="tools">
+            <a href="https://chartgpt.dev/" target="_blank" class="tool-link">ChartGPT — visual charts from CSV</a>
+            <a href="https://chat.openai.com/" target="_blank" class="tool-link">ChatGPT (Free) — file upload and "create dashboard" prompt</a>
+            <a href="https://claude.ai/" target="_blank" class="tool-link">Claude AI — advanced data analysis and visualization</a>
+          </div>
+
+          <div class="section-title">Suggested AI Prompt</div>
+          <div class="prompt-box">
+            <pre>"Create a comprehensive dashboard from this CSV with:
+- Revenue by Region (bar chart)
+- Monthly Revenue trend (line chart)
+- Top 3 salespeople by total revenue
+- Profit Margin analysis (scatter plot)
+- Customer Satisfaction vs Revenue correlation
+Provide 3-4 strategic insights based on the data patterns."</pre>
+          </div>
+        </div>
+
+      </div>
+
+      <aside class="card">
+        <div class="section-title">Resources & Sample Data</div>
+        <div style="margin-bottom: 1rem; color: var(--white-muted);">Sample CSV (sales_sample.csv):</div>
+        <a class="btn-primary" href="data:text/csv;charset=utf-8,Region,Salesperson,Month,Revenue,Cost_of_Goods,Marketing_Spend,Profit_Margin,Customer_Satisfaction%0ANorth,Asha,Jan,12000,7200,1800,40,4.2%0ASouth,Raj,Jan,8000,4800,1200,40,3.8%0AEast,Kim,Jan,6000,3600,900,40,4.5%0AWest,Liam,Jan,4500,2700,675,40,3.9%0ANorth,Asha,Feb,13000,7800,1950,40,4.3%0ASouth,Raj,Feb,9000,5400,1350,40,3.9%0AEast,Kim,Feb,6500,3900,975,40,4.6%0AWest,Liam,Feb,4800,2880,720,40,4.0%0ANorth,Asha,Mar,12500,7500,1875,40,4.4%0ASouth,Raj,Mar,9200,5520,1380,40,4.1%0AEast,Kim,Mar,7000,4200,1050,40,4.7%0AWest,Liam,Mar,5200,3120,780,40,4.2%0ANorth,Asha,Apr,14000,8400,2100,40,4.5%0ASouth,Raj,Apr,9500,5700,1425,40,4.0%0AEast,Kim,Apr,7500,4500,1125,40,4.8%0AWest,Liam,Apr,5500,3300,825,40,4.3" download="sales_sample.csv">
+          📊 Download sample CSV
+        </a>
+
+        <div class="section-title">Quick Checklist (what to compare)</div>
+        <ul class="checklist">
+          <li>Was the AI able to auto-detect column types and relationships?</li>
+          <li>Were chart labels, titles, and legends accurate?</li>
+          <li>Did AI provide meaningful insights beyond basic charts?</li>
+          <li>How well did AI handle the correlation analysis?</li>
+          <li>Were profit margin calculations and trends correctly identified?</li>
+        </ul>
+
+      </aside>
+    </div>
+
+  </div>
+
+  <script>
+    // Toggle AI Solution functionality
+    function toggleAISolution() {
+      const content = document.getElementById('aiSolutionContent');
+      const button = document.querySelector('.toggle-btn');
+      const icon = document.querySelector('.toggle-icon');
+      
+      if (content.style.display === 'none') {
+        content.style.display = 'block';
+        button.classList.add('expanded');
+        icon.textContent = '▼';
+      } else {
+        content.style.display = 'none';
+        button.classList.remove('expanded');
+        icon.textContent = '▶';
+      }
+    }
+
+    // Add smooth scroll behavior
+    document.documentElement.style.scrollBehavior = 'smooth';
+
+    // Add intersection observer for fade-in animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    // Observe cards for animation
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+      });
+    });
+  </script>
+</body>
+</html>

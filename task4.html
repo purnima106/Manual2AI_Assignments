@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Task 4 — Text or Excel → Presentation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy-primary: #0B1426;
+      --navy-secondary: #1A2332;
+      --navy-dark: #05101A;
+      --cyan-primary: #00D4FF;
+      --cyan-secondary: #06B6D4;
+      --cyan-light: #67E8F9;
+      --white: #FFFFFF;
+      --white-muted: #F8FAFC;
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+      --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+      --shadow-heavy: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      --gradient-accent: linear-gradient(135deg, var(--cyan-primary) 0%, var(--cyan-secondary) 100%);
+      --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--navy-primary);
+      color: var(--white);
+      line-height: 1.6;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* Navigation Bar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 1rem 0;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .nav-btn:hover {
+      background: rgba(0, 212, 255, 0.1);
+      border-color: var(--cyan-primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-medium);
+    }
+
+    .nav-btn.primary {
+      background: var(--gradient-accent);
+      color: var(--navy-primary);
+      font-weight: 600;
+    }
+
+    .nav-btn.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-heavy);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      margin-top: 5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      box-shadow: var(--shadow-medium);
+      transition: all 0.3s ease;
+    }
+
+    .header:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-heavy);
+    }
+
+    .header-content h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .header-content .lead {
+      font-size: 1.1rem;
+      color: var(--white-muted);
+      font-weight: 400;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+
+    .header-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: right;
+      animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+
+    .meta-item {
+      padding: 0.5rem 1rem;
+      background: var(--glass-bg);
+      border-radius: 12px;
+      border: 1px solid var(--glass-border);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: var(--shadow-medium);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--gradient-accent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-heavy);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--cyan-light);
+      position: relative;
+      padding-left: 1rem;
+    }
+
+    .section-title::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 20px;
+      background: var(--gradient-accent);
+      border-radius: 2px;
+    }
+
+    .steps {
+      list-style: none;
+      counter-reset: step-counter;
+    }
+
+    .steps li {
+      counter-increment: step-counter;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      padding: 1.5rem;
+      border-radius: 16px;
+      margin-bottom: 1rem;
+      position: relative;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .steps li::before {
+      content: counter(step-counter);
+      position: absolute;
+      left: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 30px;
+      background: var(--gradient-accent);
+      color: var(--navy-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .steps li:hover {
+      transform: translateX(10px);
+      background: rgba(0, 212, 255, 0.1);
+      border-color: var(--cyan-primary);
+    }
+
+    .tools {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .tool-link {
+      display: block;
+      padding: 1rem 1.5rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tool-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--gradient-accent);
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+
+    .tool-link:hover {
+      color: var(--navy-primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-medium);
+    }
+
+    .tool-link:hover::before {
+      left: 0;
+    }
+
+    .prompt-box {
+      background: var(--navy-dark);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin: 1rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .prompt-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--gradient-accent);
+    }
+
+    .prompt-box pre {
+      color: var(--cyan-light);
+      font-family: 'Inter', monospace;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin: 0;
+      white-space: pre-wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      background: var(--gradient-accent);
+      color: var(--navy-primary);
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-light);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-heavy);
+    }
+
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    .checklist {
+      list-style: none;
+    }
+
+    .checklist li {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--glass-border);
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .checklist li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--cyan-primary);
+      font-weight: bold;
+    }
+
+    .checklist li:last-child {
+      border-bottom: none;
+    }
+
+    .footer {
+      margin-top: 3rem;
+      padding: 2rem;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      text-align: center;
+      color: var(--white-muted);
+      font-size: 0.9rem;
+    }
+
+    .footer strong {
+      color: var(--cyan-light);
+      font-weight: 600;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.7;
+      }
+    }
+
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      .navbar-content {
+        padding: 0 1rem;
+      }
+
+      .container {
+        padding: 1rem;
+        margin-top: 4rem;
+      }
+
+      .header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+        padding: 1.5rem;
+      }
+
+      .header-content h1 {
+        font-size: 2rem;
+      }
+
+      .header-meta {
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      .main-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .card {
+        padding: 1.5rem;
+      }
+
+      .steps li {
+        padding: 1rem;
+        margin-left: 1rem;
+      }
+
+      .steps li::before {
+        left: -15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header-content h1 {
+        font-size: 1.5rem;
+      }
+
+      .header-meta {
+        flex-direction: column;
+      }
+
+      .card {
+        padding: 1rem;
+      }
+
+      .nav-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="navbar-content">
+      <a href="#" class="nav-btn">
+        ← Back
+      </a>
+      <div style="font-weight: 600; color: var(--cyan-light);">Task 4</div>
+      <a href="#" class="nav-btn primary">
+        Next →
+      </a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <header class="header">
+      <div class="header-content">
+        <h1>Task 4 — Turn a Text/Excel Document into a Presentation</h1>
+        <p class="lead">Demonstrate how AI tools can transform unstructured reports or tables into a professional, visually structured presentation in minutes.</p>
+      </div>
+      <div class="header-meta">
+        <div class="meta-item">Estimated time: <strong>15–20 min</strong></div>
+        <div class="meta-item">Difficulty: <strong>Medium</strong></div>
+      </div>
+    </header>
+
+    <div class="main-grid">
+      <div class="card">
+        <div class="section-title">1. Manual Task</div>
+        <ol class="steps">
+          <li>Download the sample text report from the right.</li>
+          <li>Open PowerPoint or Google Slides.</li>
+          <li>Create 3–4 slides summarizing the report, add basic formatting, charts, and bullet points.</li>
+          <li>Record the time taken to create and format the slides.</li>
+        </ol>
+
+        <div class="section-title">2. AI-assisted Task</div>
+        <p style="margin-bottom: 1rem; color: var(--white-muted);">Use one of the free AI presentation tools below. Upload the same text and ask the AI to create a short presentation automatically.</p>
+        
+        <div class="tools">
+          <a href="https://gamma.app/" target="_blank" class="tool-link">Gamma.app (Free tier)</a>
+          <a href="https://tome.app/" target="_blank" class="tool-link">Tome.app</a>
+        </div>
+
+        <div class="section-title">Suggested AI Prompt</div>
+        <div class="prompt-box">
+        <pre>"Turn this report into a professional 3-slide presentation.
+Include:
+- Slide 1: Key highlights
+- Slide 2: Data or visual summary
+- Slide 3: Next steps or recommendations
+Use a clean, corporate design style."</pre>
+        </div>
+
+        <div class="section-title">Facilitator Notes</div>
+        <ul class="checklist">
+          <li>Compare manual vs AI-generated presentation quality and time.</li>
+          <li>Discuss how AI tools interpret context and emphasize key insights.</li>
+          <li>Highlight customization options and when human input is still required.</li>
+        </ul>
+      </div>
+
+      <aside class="card">
+        <div class="section-title">Resources & Sample Text</div>
+        <div style="margin-bottom: 1rem; color: var(--white-muted);">Download sample report (TXT):</div>
+        <a class="btn-primary" href="data:text/plain;charset=utf-8,Quarterly%20Marketing%20Update%0A%0AIn%20Q1%2C%20our%20brand%20campaigns%20increased%20social%20reach%20by%2025%25%20and%20website%20traffic%20by%2018%25.%20Customer%20feedback%20on%20product%20quality%20improved%20with%20a%2015%25%20drop%20in%20support%20tickets.%20Sales%20growth%20was%20steady%20at%2012%25.%0A%0AKey%20Focus%20Areas%3A%0A-%20Launch%20new%20referral%20program%20in%20Q2%0A-%20Expand%20ad%20campaigns%20to%20tier-2%20cities%0A-%20Improve%20post-purchase%20experience%20on%20mobile%20apps%0A%0ANext%20Steps%3A%0A-%20Plan%20cross-functional%20marketing%20workshops%0A-%20Optimize%20content%20for%20seasonal%20trends" download="marketing_report.txt">
+          📄 Download Sample Text Report
+        </a>
+
+        <div class="section-title">Compare</div>
+        <ul class="checklist">
+          <li>Did AI correctly summarize and prioritize main insights?</li>
+          <li>Was the slide design consistent with company tone?</li>
+          <li>Did AI add visuals or icons automatically?</li>
+        </ul>
+      </aside>
+    </div>
+
+    <footer class="footer">
+      Continue to next exercise → <strong>Task: AI Research Assistant</strong>
+    </footer>
+  </div>
+
+  <script>
+    // Add smooth scroll behavior
+    document.documentElement.style.scrollBehavior = 'smooth';
+
+    // Add intersection observer for fade-in animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    // Observe cards for animation
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+      });
+    });
+  </script>
+</body>
+</html>
